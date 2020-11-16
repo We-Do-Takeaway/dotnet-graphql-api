@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 RUN mkdir GraphQL
-COPY OrderApi.sln ./
+COPY WeDoTakeawayApi.sln ./
 COPY GraphQL/GraphQL.csproj ./GraphQL/GraphQL.csproj
 COPY GraphQL.Tests/GraphQL.Tests.csproj ./GraphQL.Tests/GraphQL.Tests.csproj
 COPY Migration/Migration.csproj ./Migration/Migration.csproj

@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build latest
-        run: docker build . --tag wedotakeaway/order-api:latest
+        run: docker build . --tag wedotakeaway/graphql-api:latest
 
   dockerPush:
     name: Docker Push
@@ -50,10 +50,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build latest
-        run: docker build . --tag wedotakeaway/order-api:latest
+        run: docker build . --tag wedotakeaway/graphql-api:latest
 
       - name: Push latest
-        run: docker push wedotakeaway/order-api:latest
+        run: docker push wedotakeaway/graphql-api:latest
 
   deploy:
     name: Deploy

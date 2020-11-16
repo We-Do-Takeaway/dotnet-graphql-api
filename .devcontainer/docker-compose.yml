@@ -15,6 +15,6 @@ services:
     image: postgres:latest
     restart: unless-stopped
     environment:
-      POSTGRES_USER: order
-      POSTGRES_DB: order
+      POSTGRES_USER: wdt_dev
+      POSTGRES_DB: wdt_dev
       POSTGRES_PASSWORD: password
