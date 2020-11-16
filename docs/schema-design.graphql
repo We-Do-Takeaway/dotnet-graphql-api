@@ -1,0 +1,48 @@
+type Item {
+  id: ID!
+  qty: Int!
+}
+
+type Basket {
+  id: ID!
+  customerId: ID!
+  items: [Item!]!
+}
+
+input BasketItemInput {
+  basketId: ID!
+  itemId: ID!
+  qty: ID!
+}
+
+input BasketItemDeleteInput {
+  basketId: ID!
+  itemId: ID!
+}
+
+type UserError {
+  message: String!
+  code: String!
+}
+
+type UpdateBasketPayload {
+  basket: Basket!
+  errors: [UserError!]
+}
+
+type DeleteBasketPayload {
+  result: Boolean!
+  errors: [UserError!]
+}
+
+type Query {
+  basketByCustomerId(id: ID!): Basket!
+}
+
+type Mutation {
+  addBasketItem(input: BasketItemInput!): UpdateBasketPayload!
+  updateBasketItem(input: BasketItemInput!): UpdateBasketPayload!
+  removeBasketItem(input: BasketItemDeleteInput!): UpdateBasketPayload!
+  clearBasket(id: ID!): UpdateBasketPayload!
+  deleteBasket(id: ID!): DeleteBasketPayload!
+}

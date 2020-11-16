@@ -1,0 +1,72 @@
+# Runs for pull requests. Lints and tests everything
+name: Test and build
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.100
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+
+  dockerBuild:
+    name: Docker Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build latest
+        run: docker build . --tag wedotakeaway/order-api:latest
+
+  dockerPush:
+    name: Docker Push
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: dockerBuild
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build latest
+        run: docker build . --tag wedotakeaway/order-api:latest
+
+      - name: Push latest
+        run: docker push wedotakeaway/order-api:latest
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: dockerPush
+
+    steps:
+      - name: Update and restart server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.APP_SERVER_HOST }}
+          username: ${{ secrets.APP_SERVER_USERNAME }}
+          key: ${{ secrets.APP_SERVER_KEY }}
+          port: ${{ secrets.APP_SERVER_PORT }}
+          script: "/opt/wdt/restart.sh"

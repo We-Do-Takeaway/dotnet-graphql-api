@@ -1,0 +1,17 @@
+{
+  "name": "Order API",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "extensions": [
+    "ms-dotnettools.csharp",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg"
+  ],
+  "forwardPorts": [5000, 5001, 5432],
+  "postCreateCommand": "dotnet restore",
+  "remoteUser": "vscode"
+}
