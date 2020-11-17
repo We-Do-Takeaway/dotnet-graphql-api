@@ -160,6 +160,223 @@ namespace WeDoTakeawayAPI.GraphQL.Migrations
                 principalTable: "item",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
+            
+            #region Seed Data
+            // Menu
+            var menuId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea4");
+            
+            var mainSectionId = Guid.NewGuid();
+            var desertSectionId = Guid.NewGuid();
+            
+            var plateOfSausagesId = Guid.NewGuid();
+            var chocIceCreamSurpriseId = Guid.NewGuid();
+            var bowlOfCherriesId = Guid.NewGuid();
+
+            var sausageId = Guid.NewGuid();
+            var cherryId = Guid.NewGuid();
+            var iceCreamId = Guid.NewGuid();
+            
+            migrationBuilder.InsertData(
+                table: "menu",
+                columns: new[] { "id","name", "description", "photo" },
+                values: new object[]
+                {
+                    menuId, 
+                    "Cafe comfort and waffles", 
+                    "The cafe is all about food to make you feel better when you can't face the world or feel like you are going crazy. Have an all day breakfast, your mothers Sunday roast or help yourself to the biggest bowl of ice-cream will lots of extras",
+                    "https://www.wedotakeaway.com/images/kitchen.jpg"
+                }
+            );
+            
+            // Sections
+            migrationBuilder.InsertData(
+                table: "section",
+                columns: new[] { "id","name", "description", "menu_id", "display_order" },
+                values: new object[]
+                {
+                    mainSectionId, 
+                    "Main", 
+                    "Stuff to fill you up",
+                    menuId,
+                    1
+                }
+                
+            );
+            
+            migrationBuilder.InsertData(
+                table: "section",
+                columns: new[] { "id","name", "description", "menu_id", "display_order" },
+                values: new object[]
+                {
+                    desertSectionId, 
+                    "Desert", 
+                    "The best stuff",
+                    menuId,
+                    1
+                }
+            );
+            
+            // Plate of sausages
+            migrationBuilder.InsertData(
+                table: "item",
+                columns: new[] { "id","name", "description", "photo" },
+                values: new object[]
+                {
+                    plateOfSausagesId, 
+                    "Plate of sausages", 
+                    "Big bowl of sausages",
+                    "https://www.wedotakeaway.com/images/sausages.jpg"
+                }
+            );
+            
+            // Join it to the section
+            migrationBuilder.InsertData(
+                table: "section_item",
+                columns: new[] { "section_id", "item_id", "display_order" },
+                values: new object[]
+                {
+                    mainSectionId, 
+                    plateOfSausagesId,
+                    1
+                }
+            );
+            
+            // Add the ingredient
+            migrationBuilder.InsertData(
+                table: "ingredient",
+                columns: new[] { "id","name", "description", "photo" },
+                values: new object[]
+                {
+                    sausageId, 
+                    "Sausage", 
+                    "Locally reared",
+                    "https://www.wedotakeaway.com/images/sausages.jpg"
+                }
+            );
+            
+            // And say we need 4 of the ingredient
+            migrationBuilder.InsertData(
+                table: "item_ingredient",
+                columns: new[] { "item_id", "ingredient_id", "quantity" },
+                values: new object[]
+                {
+                    plateOfSausagesId,
+                    sausageId, 
+                    5
+                }
+            );
+            
+            //////////////
+            // Bowl of cherries
+            migrationBuilder.InsertData(
+                table: "item",
+                columns: new[] { "id","name", "description", "photo" },
+                values: new object[]
+                {
+                    bowlOfCherriesId, 
+                    "Bowl of cherries", 
+                    "Big bowl of cherries",
+                    "https://www.wedotakeaway.com/images/cherries.jpg"
+                }
+            );
+            
+            // Join it to the section
+            migrationBuilder.InsertData(
+                table: "section_item",
+                columns: new[] { "section_id", "item_id", "display_order" },
+                values: new object[]
+                {
+                    desertSectionId, 
+                    bowlOfCherriesId,
+                    1
+                }
+            );
+            
+            // Add the ingredient
+            migrationBuilder.InsertData(
+                table: "ingredient",
+                columns: new[] { "id","name", "description" },
+                values: new object[]
+                {
+                    cherryId, 
+                    "Cherry", 
+                    "In a jar",
+                }
+            );
+            
+            // And say we need 2 of the ingredient
+            migrationBuilder.InsertData(
+                table: "item_ingredient",
+                columns: new[] { "item_id", "ingredient_id", "quantity" },
+                values: new object[]
+                {
+                    bowlOfCherriesId,
+                    cherryId, 
+                    2
+                }
+            );
+            
+            //////////////
+            // Ice Cream surprise
+            migrationBuilder.InsertData(
+                table: "item",
+                columns: new[] { "id","name", "description", "photo" },
+                values: new object[]
+                {
+                    chocIceCreamSurpriseId, 
+                    "Chocolate ice-cream surprise", 
+                    "An amazing mixture of chocolate and cherries",
+                    "https://www.wedotakeaway.com/images/choc-ice-cream.webp"
+                }
+            );
+            
+            // Join it to the section
+            migrationBuilder.InsertData(
+                table: "section_item",
+                columns: new[] { "section_id", "item_id", "display_order" },
+                values: new object[]
+                {
+                    desertSectionId, 
+                    chocIceCreamSurpriseId,
+                    2
+                }
+            );
+            
+            // Add the ingredient
+            migrationBuilder.InsertData(
+                table: "ingredient",
+                columns: new[] { "id","name", "description" },
+                values: new object[]
+                {
+                    iceCreamId, 
+                    "Chocolate ice cream", 
+                    "Rich yummy belgium chocolate",
+                }
+            );
+            
+            // And say we need ice cream and cherries
+            migrationBuilder.InsertData(
+                table: "item_ingredient",
+                columns: new[] { "item_id", "ingredient_id", "quantity" },
+                values: new object[]
+                {
+                    chocIceCreamSurpriseId,
+                    iceCreamId, 
+                    3
+                }
+            );
+            
+            migrationBuilder.InsertData(
+                table: "item_ingredient",
+                columns: new[] { "item_id", "ingredient_id", "quantity" },
+                values: new object[]
+                {
+                    chocIceCreamSurpriseId,
+                    cherryId, 
+                    2
+                }
+            );
+            #endregion
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
