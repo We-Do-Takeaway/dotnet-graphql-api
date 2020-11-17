@@ -13,7 +13,7 @@ using Xunit;
 
 namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 {
-    public class WeDoTakeawayAPISchemaTests:BaseBasketTests
+    public class WeDoTakeawayAPISchemaTests
     {
         [Fact]
         public async Task Verify_Schema()
