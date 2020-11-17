@@ -47,13 +47,12 @@ namespace WeDoTakeawayAPI.GraphQL.Baskets
             {
                 item = new BasketItem
                 {
-                    Id = new Guid(),
                     BasketId = basketId,
                     ItemId = itemId,
                     Qty = qty
                 };
                 
-                await dbContext.BasketItems.AddAsync(item);
+                basket.Items.Add(item);
             }
             
             await dbContext.SaveChangesAsync();
@@ -147,7 +146,7 @@ namespace WeDoTakeawayAPI.GraphQL.Baskets
                 return new UpdateBasketPayload( new UserError("Invalid Basket ID", "1001"));
             }
             
-            dbContext.BasketItems.RemoveRange(basket.Items);
+            basket.Items.Clear();
 
             await dbContext.SaveChangesAsync();
             return new UpdateBasketPayload(basket);

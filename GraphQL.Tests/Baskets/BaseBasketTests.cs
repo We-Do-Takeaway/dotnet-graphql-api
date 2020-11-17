@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
@@ -57,21 +58,19 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
             var dbContext = GetDbContext();
 
             var basket = new Basket {Id = basketId, CustomerId = customerId};
-            await dbContext.Baskets.AddAsync(basket);
 
             if (itemId != null)
             {
                 var item = new BasketItem
                 {
-                    Id = new Guid(),
                     BasketId = basketId,
                     ItemId = (Guid) itemId,
                     Qty = 1
                 };
 
-                await dbContext.BasketItems.AddAsync(item);
+                basket.Items.Add(item);
             }
-
+            await dbContext.Baskets.AddAsync(basket);
             await dbContext.SaveChangesAsync();
         }
 
@@ -79,14 +78,15 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
         {
             var item2 = new BasketItem
             {
-                Id = new Guid(),
                 BasketId = basketId,
                 ItemId = itemId,
                 Qty = 1
             };
 
             var dbContext = GetDbContext();
-            await dbContext.BasketItems.AddAsync(item2);
+
+            Basket basket = await dbContext.Baskets.FindAsync(basketId);
+            basket.Items.Add(item2);
             await dbContext.SaveChangesAsync();
         }
     }
