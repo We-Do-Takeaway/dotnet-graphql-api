@@ -10,9 +10,17 @@ type Basket {
 }
 
 type BasketItem {
-  id: ID!
   itemId: ID!
+  item: Item
+  basket: Basket
   qty: Int!
+}
+
+type Item {
+  id: ID!
+  name: String!
+  description: String
+  photo: String
 }
 
 type Mutation {

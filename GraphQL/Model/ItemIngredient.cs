@@ -1,12 +1,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using HotChocolate;
 
 namespace WeDoTakeawayAPI.GraphQL.Model
 {
-    [Table("basket_item")]
-    public class BasketItem
+    [Table("item_ingredient")]
+    public class ItemIngredient
     {
         [Required]
         [Column("item_id")]
@@ -15,15 +14,13 @@ namespace WeDoTakeawayAPI.GraphQL.Model
         public Item? Item { get; set; }
         
         [Required]
-        [Column("basket_id")]
-        [GraphQLIgnore]
-        public Guid BasketId { get; set; }
-
-        public Basket? Basket { get; set; }
+        [Column("ingredient_id")]
+        public Guid IngredientId { get; set; }
+        
+        public Ingredient? Ingredient { get; set; }
         
         [Required]
-        [Column("qty")]
-        public int Qty { get; set; }
-        
+        [Column("quantity")]
+        public int? Quantity { get; set; }
     }
 }

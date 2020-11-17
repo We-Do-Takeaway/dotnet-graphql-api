@@ -10,7 +10,7 @@ using WeDoTakeawayAPI.GraphQL.Model;
 
 namespace WeDoTakeawayAPI.GraphQL.DataLoaders
 {
-    public class ItemByIdDataLoader : BatchDataLoader<Guid, BasketItem>
+    public class ItemByIdDataLoader : BatchDataLoader<Guid, Item>
     {
         private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
@@ -23,15 +23,15 @@ namespace WeDoTakeawayAPI.GraphQL.DataLoaders
                                 throw new ArgumentNullException(nameof(dbContextFactory));
         }
 
-        protected override async Task<IReadOnlyDictionary<Guid, BasketItem>> LoadBatchAsync(
+        protected override async Task<IReadOnlyDictionary<Guid, Item>> LoadBatchAsync(
             IReadOnlyList<Guid> keys, 
             CancellationToken cancellationToken)
         {
             await using ApplicationDbContext dbContext = 
                 _dbContextFactory.CreateDbContext();
             
-            return await dbContext.BasketItems
-                .Where<BasketItem>(i => keys.Contains(i.Id))
+            return await dbContext.Items
+                .Where<Item>(i => keys.Contains(i.Id))
                 .ToDictionaryAsync(t => t.Id, cancellationToken);
         }
     }
