@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WeDoTakeawayAPI.GraphQL.Migrations
 {
-    public partial class Menu : Migration
+    public partial class MenuSectionItem : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

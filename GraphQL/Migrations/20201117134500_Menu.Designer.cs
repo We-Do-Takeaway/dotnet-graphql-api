@@ -11,7 +11,7 @@ namespace WeDoTakeawayAPI.GraphQL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20201117134500_Menu")]
-    partial class Menu
+    partial class MenuSectionItem
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
