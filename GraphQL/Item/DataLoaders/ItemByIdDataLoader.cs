@@ -8,9 +8,9 @@ using HotChocolate.DataLoader;
 using Microsoft.EntityFrameworkCore;
 using WeDoTakeawayAPI.GraphQL.Model;
 
-namespace WeDoTakeawayAPI.GraphQL.DataLoaders
+namespace WeDoTakeawayAPI.GraphQL.Item.DataLoaders
 {
-    public class ItemByIdDataLoader : BatchDataLoader<Guid, Item>
+    public class ItemByIdDataLoader : BatchDataLoader<Guid, Model.Item>
     {
         private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
@@ -23,7 +23,7 @@ namespace WeDoTakeawayAPI.GraphQL.DataLoaders
                                 throw new ArgumentNullException(nameof(dbContextFactory));
         }
 
-        protected override async Task<IReadOnlyDictionary<Guid, Item>> LoadBatchAsync(
+        protected override async Task<IReadOnlyDictionary<Guid, Model.Item>> LoadBatchAsync(
             IReadOnlyList<Guid> keys, 
             CancellationToken cancellationToken)
         {
@@ -31,7 +31,7 @@ namespace WeDoTakeawayAPI.GraphQL.DataLoaders
                 _dbContextFactory.CreateDbContext();
             
             return await dbContext.Items
-                .Where<Item>(i => keys.Contains(i.Id))
+                .Where<Model.Item>(i => keys.Contains(i.Id))
                 .ToDictionaryAsync(t => t.Id, cancellationToken);
         }
     }
