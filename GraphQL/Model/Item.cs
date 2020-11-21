@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,5 +22,8 @@ namespace WeDoTakeawayAPI.GraphQL.Model
         [Column("photo")]
         [StringLength(100)]
         public string? Photo { get; set; }
+        
+        public ICollection<SectionItem> SectionItems { get; set; } = 
+            new List<SectionItem>();
     }
 }

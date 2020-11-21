@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HotChocolate;
@@ -39,5 +40,8 @@ namespace WeDoTakeawayAPI.GraphQL.Model
         
         [Column("display_order")]
         public int? DisplayOrder { get; set; }
+        
+        public ICollection<SectionItem> SectionItems { get; set; } = 
+            new List<SectionItem>();
     }
 }
