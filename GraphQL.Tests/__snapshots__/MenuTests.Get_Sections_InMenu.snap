@@ -1,0 +1,28 @@
+﻿{
+  "Label": null,
+  "Path": null,
+  "Data": {
+    "menuById": {
+      "id": "600dca30-c6e2-4035-ad15-783c122d6ea1",
+      "name": "Cafe comfort and waffles",
+      "sections": {
+        "nodes": [
+          {
+            "id": "600dca30-c6e2-4035-ad15-783c122d6ea2",
+            "name": "Main",
+            "displayOrder": 1
+          },
+          {
+            "id": "600dca30-c6e2-4035-ad15-783c122d6ea3",
+            "name": "Desert",
+            "displayOrder": 2
+          }
+        ]
+      }
+    }
+  },
+  "Errors": null,
+  "Extensions": null,
+  "ContextData": null,
+  "HasNext": null
+}

@@ -23,6 +23,34 @@ type Item {
   photo: String
 }
 
+type Menu {
+  sections(first: Int after: String last: Int before: String): SectionConnection
+  id: ID!
+  name: String!
+  description: String
+  introduction: String
+  footer: String
+  photo: String
+}
+
+"A connection to a list of items."
+type MenuConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [MenuEdge!]
+  "A flattened list of the nodes."
+  nodes: [Menu!]
+}
+
+"An edge in a connection."
+type MenuEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Menu!
+}
+
 type Mutation {
   addBasketItem(input: BasketItemInput!): UpdateBasketPayload!
   updateBasketItem(input: BasketItemInput!): UpdateBasketPayload!
@@ -30,8 +58,51 @@ type Mutation {
   clearBasket(id: ID!): UpdateBasketPayload!
 }
 
+"Information about pagination in a connection."
+type PageInfo {
+  "Indicates whether more edges exist following the set defined by the clients arguments."
+  hasNextPage: Boolean!
+  "Indicates whether more edges exist prior the set defined by the clients arguments."
+  hasPreviousPage: Boolean!
+  "When paginating backwards, the cursor to continue."
+  startCursor: String
+  "When paginating forwards, the cursor to continue."
+  endCursor: String
+}
+
 type Query {
   basketByCustomerId(id: ID!): Basket!
+  menus(first: Int after: String last: Int before: String): MenuConnection
+  menuById(id: ID!): Menu!
+}
+
+type Section {
+  menu: Menu
+  id: ID!
+  name: String!
+  description: String
+  introduction: String
+  footer: String
+  photo: String
+  displayOrder: Int
+}
+
+"A connection to a list of items."
+type SectionConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [SectionEdge!]
+  "A flattened list of the nodes."
+  nodes: [Section!]
+}
+
+"An edge in a connection."
+type SectionEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Section!
 }
 
 type UpdateBasketPayload {
