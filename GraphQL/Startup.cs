@@ -8,9 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WeDoTakeawayAPI.GraphQL.Baskets;
-using WeDoTakeawayAPI.GraphQL.DataLoaders;
+using WeDoTakeawayAPI.GraphQL.Basket;
+using WeDoTakeawayAPI.GraphQL.Item.DataLoaders;
+using WeDoTakeawayAPI.GraphQL.Menu;
+using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
 using WeDoTakeawayAPI.GraphQL.Model;
+using WeDoTakeawayAPI.GraphQL.Section;
+using WeDoTakeawayAPI.GraphQL.Section.DataLoaders;
 
 namespace WeDoTakeawayAPI.GraphQL
 {
@@ -33,10 +37,15 @@ namespace WeDoTakeawayAPI.GraphQL
                 .BindRuntimeType<Guid, IdType>()
                 .AddTypeConverter<Guid, string>(from => from.ToString("D"))
                 .AddQueryType(d => d.Name("Query"))
-                .AddTypeExtension<BasketQueries>()
+                    .AddTypeExtension<BasketQueries>()
+                    .AddTypeExtension<MenuQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
-                .AddTypeExtension<BasketMutations>()
-                .AddDataLoader<ItemByIdDataLoader>();
+                    .AddTypeExtension<BasketMutations>()
+                .AddType<MenuType>()
+                .AddType<SectionType>()
+                .AddDataLoader<ItemByIdDataLoader>()
+                .AddDataLoader<MenuByIdDataLoader>()
+                .AddDataLoader<SectionByIdDataLoader>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
