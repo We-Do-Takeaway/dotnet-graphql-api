@@ -17,10 +17,29 @@ type BasketItem {
 }
 
 type Item {
+  sections: [Section]
   id: ID!
   name: String!
   description: String
   photo: String
+}
+
+"A connection to a list of items."
+type ItemConnection {
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "A list of edges."
+  edges: [ItemEdge!]
+  "A flattened list of the nodes."
+  nodes: [Item!]
+}
+
+"An edge in a connection."
+type ItemEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Item!
 }
 
 type Menu {
@@ -78,6 +97,7 @@ type Query {
 
 type Section {
   menu: Menu
+  items(first: Int after: String last: Int before: String): ItemConnection
   id: ID!
   name: String!
   description: String

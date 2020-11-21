@@ -11,39 +11,39 @@ using WeDoTakeawayAPI.GraphQL.Model;
 using WeDoTakeawayAPI.GraphQL.Section;
 using WeDoTakeawayAPI.GraphQL.Section.DataLoaders;
 
-namespace WeDoTakeawayAPI.GraphQL.Menu
+namespace WeDoTakeawayAPI.GraphQL.Item
 {
-    public class MenuType : ObjectType<Model.Menu>
+    public class ItemType : ObjectType<Model.Item>
     {
-        protected override void Configure(IObjectTypeDescriptor<Model.Menu> descriptor)
+        protected override void Configure(IObjectTypeDescriptor<Model.Item> descriptor)
         {
             descriptor
-                .Field(t => t.Sections)
-                .ResolveWith <MenuResolvers> (t => 
+                .Field(s => s.SectionItems)
+                .ResolveWith <SectionResolvers> (t => 
                     t.GetSectionsAsync(
                         default!, 
                         default!, 
                         default!, 
                         default!
-                        )
                     )
+                )
                 .UseDbContext<ApplicationDbContext>()
-                .UsePaging<NonNullType<SectionType>>()
                 .Name("sections");
-        }
 
-        private class MenuResolvers
+        }
+        
+        private class SectionResolvers
         {
-            public async Task<IEnumerable<Model.Section>> GetSectionsAsync(
-                Model.Menu menu,
+           public async Task<IEnumerable<Model.Section>> GetSectionsAsync(
+                Model.Item item,
                 [ScopedService] ApplicationDbContext dbContext,
                 SectionByIdDataLoader sectionById,
                 CancellationToken cancellationToken)
             {
-                Guid[] sectionIds = await dbContext.Sections
-                    .Where(s => s.MenuId == menu.Id)
-                    .OrderBy(s => s.DisplayOrder)
-                    .Select(s => s.Id)
+                Guid[] sectionIds = await dbContext.Items
+                    .Where(i => i.Id == item.Id)
+                    .Include(i => i.SectionItems)
+                    .SelectMany(i => i.SectionItems.Select(t => t.SectionId))
                     .ToArrayAsync(cancellationToken);
                 
                 return await sectionById.LoadAsync(sectionIds, cancellationToken);
