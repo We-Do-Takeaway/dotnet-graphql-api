@@ -1,24 +1,28 @@
-using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using WeDoTakeawayAPI.GraphQL.Model;
 using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Types;
-using WeDoTakeawayAPI.GraphQL.Baskets;
-using WeDoTakeawayAPI.GraphQL.DataLoaders;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Snapshooter.Xunit;
+using System;
+using System.Threading.Tasks;
+using WeDoTakeawayAPI.GraphQL.Basket;
+using WeDoTakeawayAPI.GraphQL.Item.DataLoaders;
+using WeDoTakeawayAPI.GraphQL.Menu;
+using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
+using WeDoTakeawayAPI.GraphQL.Model;
+using WeDoTakeawayAPI.GraphQL.Section;
+using WeDoTakeawayAPI.GraphQL.Section.DataLoaders;
 using Xunit;
 
-namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
+namespace WeDoTakeawayAPI.GraphQL.Tests
 {
-    public class WeDoTakeawayAPISchemaTests
+    public class WeDoTakeawayApiSchemaTests
     {
         [Fact]
         public async Task Verify_Schema()
         {
-            ISchema schema = await new ServiceCollection()
+            var schema = await new ServiceCollection()
                 .AddPooledDbContextFactory<ApplicationDbContext>
                     (options => options.UseSqlite("Data Source=WeDoTakeawayAPISchemaTests.db"))
                 .AddGraphQL()
@@ -26,9 +30,14 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
                 .AddTypeConverter<Guid, string>(from => from.ToString("D"))
                 .AddQueryType(d => d.Name("Query"))
                 .AddTypeExtension<BasketQueries>()
+                .AddTypeExtension<MenuQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                 .AddTypeExtension<BasketMutations>()
+                .AddType<MenuType>()
+                .AddType<SectionType>()
                 .AddDataLoader<ItemByIdDataLoader>()
+                .AddDataLoader<MenuByIdDataLoader>()
+                .AddDataLoader<SectionByIdDataLoader>()
                 .BuildSchemaAsync();
 
             // assert

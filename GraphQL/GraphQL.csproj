@@ -8,18 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.0-rc.3" />
-    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.3" />
-    <PackageReference Include="HotChocolate.AspNetCore.Voyager" Version="10.5.3" />
+    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.4" />
+    <PackageReference Include="HotChocolate.AspNetCore.Voyager" Version="10.5.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Menu" />
   </ItemGroup>
 
 </Project>

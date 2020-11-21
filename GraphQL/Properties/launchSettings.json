@@ -22,7 +22,7 @@
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings__DefaultConnection": "Host=postgres;Username=wtd_dev;Password=password;Database=wtd_dev"
+        "ConnectionStrings__DefaultConnection": "Host=postgres;Username=wdtdev;Password=password;Database=wdtdev"
       }
     }
   }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WeDoTakeawayAPI.GraphQL.Migrations
 {
-    public partial class Menu : Migration
+    public partial class MenuSectionItem : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -163,18 +163,18 @@ namespace WeDoTakeawayAPI.GraphQL.Migrations
             
             #region Seed Data
             // Menu
-            var menuId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea4");
+            var menuId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea1");
             
-            var mainSectionId = Guid.NewGuid();
-            var desertSectionId = Guid.NewGuid();
+            var mainSectionId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea2");
+            var desertSectionId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea3");
             
-            var plateOfSausagesId = Guid.NewGuid();
-            var chocIceCreamSurpriseId = Guid.NewGuid();
-            var bowlOfCherriesId = Guid.NewGuid();
+            var plateOfSausagesId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea4");
+            var chocIceCreamSurpriseId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea5");
+            var bowlOfCherriesId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea6");
 
-            var sausageId = Guid.NewGuid();
-            var cherryId = Guid.NewGuid();
-            var iceCreamId = Guid.NewGuid();
+            var sausageId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea7");
+            var cherryId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea8");
+            var iceCreamId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea9");
             
             migrationBuilder.InsertData(
                 table: "menu",
@@ -212,7 +212,7 @@ namespace WeDoTakeawayAPI.GraphQL.Migrations
                     "Desert", 
                     "The best stuff",
                     menuId,
-                    1
+                    2
                 }
             );
             
