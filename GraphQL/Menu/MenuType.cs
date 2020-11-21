@@ -48,6 +48,6 @@ namespace WeDoTakeawayAPI.GraphQL.Menu
                 
                 return await sectionById.LoadAsync(sectionIds, cancellationToken);
             }
-    }
+        }
     }
 }
