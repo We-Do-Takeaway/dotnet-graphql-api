@@ -15,19 +15,19 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
                     .New()
                     .SetQuery(@"
                         query Menus {
-                            menus {
+                          menus {
+                            nodes {
+                              id
+                              name
+                              sections {
                                 nodes {
-                                    id
-                                    name
-                                    sections {
-                                        nodes {
-                                            id
-                                            name
-                                            displayOrder
-                                        }
-                                    }
+                                  id
+                                  name
+                                  displayOrder
                                 }
+                              }
                             }
+                         }
                         }")
                     .Create());
         

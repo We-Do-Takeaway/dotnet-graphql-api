@@ -1,0 +1,28 @@
+﻿{
+  "Label": null,
+  "Path": null,
+  "Data": {
+    "sectionById": {
+      "id": "600dca30-c6e2-4035-ad15-783c122d6ea3",
+      "name": "Desert",
+      "items": {
+        "nodes": [
+          {
+            "id": "600dca30-c6e2-4035-ad15-783c122d6ea6",
+            "name": "Bowl of cherries",
+            "description": "Big bowl of cherries"
+          },
+          {
+            "id": "600dca30-c6e2-4035-ad15-783c122d6ea5",
+            "name": "Chocolate ice-cream surprise",
+            "description": "An amazing mixture of chocolate and cherries"
+          }
+        ]
+      }
+    }
+  },
+  "Errors": null,
+  "Extensions": null,
+  "ContextData": null,
+  "HasNext": null
+}

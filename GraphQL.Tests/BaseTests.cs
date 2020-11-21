@@ -4,6 +4,7 @@ using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WeDoTakeawayAPI.GraphQL.Basket;
+using WeDoTakeawayAPI.GraphQL.Item;
 using WeDoTakeawayAPI.GraphQL.Item.DataLoaders;
 using WeDoTakeawayAPI.GraphQL.Menu;
 using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
@@ -34,9 +35,12 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
                 .AddTypeConverter<Guid, string>(from => from.ToString("D"))
                 .AddQueryType(d => d.Name("Query"))
                     .AddTypeExtension<BasketQueries>()
+                    .AddTypeExtension<ItemQueries>()
                     .AddTypeExtension<MenuQueries>()
+                    .AddTypeExtension<SectionQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                     .AddTypeExtension<BasketMutations>()
+                .AddType<ItemType>()
                 .AddType<MenuType>()
                 .AddType<SectionType>()
                 .AddDataLoader<ItemByIdDataLoader>()
