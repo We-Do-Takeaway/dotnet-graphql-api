@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using WeDoTakeawayAPI.GraphQL.Model;
 using WeDoTakeawayAPI.GraphQL.Extensions;
 
-namespace WeDoTakeawayAPI.GraphQL.Baskets
+namespace WeDoTakeawayAPI.GraphQL.Basket
 {
     [ExtendObjectType(Name = "Query")]
     public class BasketQueries
     {
         [UseApplicationDbContext]
-        public async Task<Basket> GetBasketByCustomerId(
+        public async Task<Model.Basket> GetBasketByCustomerId(
             Guid id,
             [ScopedService] ApplicationDbContext dbContext,
             CancellationToken cancellationToken)
@@ -22,7 +22,7 @@ namespace WeDoTakeawayAPI.GraphQL.Baskets
             // Look for a basket in the DB
             var customerId = id;
             
-            Basket basket = await dbContext.Baskets
+            Model.Basket basket = await dbContext.Baskets
                 .Where(b => b.CustomerId == customerId)
                 .Include(b => b.Items)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -34,7 +34,7 @@ namespace WeDoTakeawayAPI.GraphQL.Baskets
             }
 
             // Otherwise create a new one for the customer in the db and return that
-            basket = new Basket {Id = new Guid(), CustomerId = customerId};
+            basket = new Model.Basket {Id = new Guid(), CustomerId = customerId};
 
             await dbContext.Baskets.AddAsync(basket, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);

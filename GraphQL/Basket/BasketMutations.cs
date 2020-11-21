@@ -8,7 +8,7 @@ using WeDoTakeawayAPI.GraphQL.Common;
 using WeDoTakeawayAPI.GraphQL.Model;
 using WeDoTakeawayAPI.GraphQL.Extensions;
 
-namespace WeDoTakeawayAPI.GraphQL.Baskets
+namespace WeDoTakeawayAPI.GraphQL.Basket
 {
     [ExtendObjectType(Name = "Mutation")]
     // ReSharper disable once ClassNeverInstantiated.Global
@@ -26,7 +26,7 @@ namespace WeDoTakeawayAPI.GraphQL.Baskets
                 return new UpdateBasketPayload( new UserError("Invalid Item Quantity", "1003"));
             }
             
-            Basket basket = await dbContext
+            Model.Basket basket = await dbContext
                 .Baskets.Where(b => b.Id == basketId)
                 .Include(b => b.Items)
                 .FirstOrDefaultAsync();
@@ -67,7 +67,7 @@ namespace WeDoTakeawayAPI.GraphQL.Baskets
         {
             var (basketId, itemId, qty) = input;
             
-            Basket basket = await dbContext
+            Model.Basket basket = await dbContext
                 .Baskets.Where(b => b.Id == basketId)
                 .Include(b => b.Items)
                 .FirstOrDefaultAsync();
@@ -107,7 +107,7 @@ namespace WeDoTakeawayAPI.GraphQL.Baskets
         {
             var (basketId, itemId) = input;
             
-            Basket basket = await dbContext
+            Model.Basket basket = await dbContext
                 .Baskets.Where(b => b.Id == basketId)
                 .Include(b => b.Items)
                 .FirstOrDefaultAsync();
@@ -136,7 +136,7 @@ namespace WeDoTakeawayAPI.GraphQL.Baskets
             Guid id,
             [ScopedService] ApplicationDbContext dbContext)
         {
-            Basket basket = await dbContext
+            Model.Basket basket = await dbContext
                 .Baskets.Where(b => b.Id == id)
                 .Include(b => b.Items)
                 .FirstOrDefaultAsync();

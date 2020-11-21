@@ -1,14 +1,13 @@
-using System.Collections.Generic;
 using WeDoTakeawayAPI.GraphQL.Common;
-using WeDoTakeawayAPI.GraphQL.Model;
 
-namespace WeDoTakeawayAPI.GraphQL.Baskets
+
+namespace WeDoTakeawayAPI.GraphQL.Basket
 {
     public class UpdateBasketPayload : Payload
     {
-        public Basket? Basket { get; }
+        public Model.Basket? Basket { get; }
         
-        public UpdateBasketPayload(Basket basket)
+        public UpdateBasketPayload(Model.Basket basket)
         {
             Basket = basket;
         }
