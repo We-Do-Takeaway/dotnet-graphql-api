@@ -48,5 +48,29 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
         
             result.MatchSnapshot();
         }
+        
+        [Fact]
+        public async Task Get_Item_Ingredients()
+        {
+            var result = await ServiceProvider.ExecuteRequestAsync(
+                QueryRequestBuilder
+                    .New()
+                    .SetQuery(@"
+                    query ItemById($id: ID!) {
+                      itemById(id:$id) {
+                        id
+                        name
+                        ingredients {
+                            id
+                            name
+                            quantity
+                        }
+                      }
+                    }")
+                    .SetVariableValue(name: "id", value: "600dca30-c6e2-4035-ad15-783c122d6ea6")
+                    .Create());
+        
+            result.MatchSnapshot();
+        }
     }
 }
