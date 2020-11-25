@@ -7,7 +7,6 @@ using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using WeDoTakeawayAPI.GraphQL.Extensions;
 using WeDoTakeawayAPI.GraphQL.Item;
-using WeDoTakeawayAPI.GraphQL.Item.DataLoaders;
 using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
 using WeDoTakeawayAPI.GraphQL.Model;
 

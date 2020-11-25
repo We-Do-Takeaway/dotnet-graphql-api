@@ -7,7 +7,7 @@ using Snapshooter.Xunit;
 using System;
 using System.Threading.Tasks;
 using WeDoTakeawayAPI.GraphQL.Basket;
-using WeDoTakeawayAPI.GraphQL.Item.DataLoaders;
+using WeDoTakeawayAPI.GraphQL.Item;
 using WeDoTakeawayAPI.GraphQL.Menu;
 using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
 using WeDoTakeawayAPI.GraphQL.Model;
