@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WeDoTakeawayAPI.GraphQL.Basket;
 using WeDoTakeawayAPI.GraphQL.Item;
-using WeDoTakeawayAPI.GraphQL.Item.DataLoaders;
 using WeDoTakeawayAPI.GraphQL.Menu;
 using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
 using WeDoTakeawayAPI.GraphQL.Model;

@@ -8,7 +8,7 @@ using HotChocolate.DataLoader;
 using Microsoft.EntityFrameworkCore;
 using WeDoTakeawayAPI.GraphQL.Model;
 
-namespace WeDoTakeawayAPI.GraphQL.Item.DataLoaders
+namespace WeDoTakeawayAPI.GraphQL.Item
 {
     public class ItemByIdDataLoader : BatchDataLoader<Guid, Model.Item>
     {
@@ -31,7 +31,7 @@ namespace WeDoTakeawayAPI.GraphQL.Item.DataLoaders
                 _dbContextFactory.CreateDbContext();
             
             return await dbContext.Items
-                .Where<Model.Item>(i => keys.Contains(i.Id))
+                .Where(i => keys.Contains(i.Id))
                 .ToDictionaryAsync(t => t.Id, cancellationToken);
         }
     }
