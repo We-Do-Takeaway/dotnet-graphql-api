@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WeDoTakeawayAPI.GraphQL.Basket;
+using WeDoTakeawayAPI.GraphQL.Ingredient;
 using WeDoTakeawayAPI.GraphQL.Item;
 using WeDoTakeawayAPI.GraphQL.Menu;
 using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
@@ -46,6 +47,7 @@ namespace WeDoTakeawayAPI.GraphQL
                 .AddType<ItemType>()
                 .AddType<MenuType>()
                 .AddType<SectionType>()
+                .AddDataLoader<IngredientByIdDataLoader>()
                 .AddDataLoader<ItemByIdDataLoader>()
                 .AddDataLoader<MenuByIdDataLoader>()
                 .AddDataLoader<SectionByIdDataLoader>();

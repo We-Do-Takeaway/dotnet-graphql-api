@@ -25,5 +25,9 @@ namespace WeDoTakeawayAPI.GraphQL.Model
         
         public ICollection<SectionItem> SectionItems { get; set; } = 
             new List<SectionItem>();
+        
+        public ICollection<ItemIngredient> ItemIngredients { get; set; } = 
+            new List<ItemIngredient>();
+
     }
 }
