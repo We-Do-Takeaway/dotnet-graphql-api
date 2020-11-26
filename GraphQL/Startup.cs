@@ -1,6 +1,4 @@
 using System;
-using HotChocolate.AspNetCore;
-using HotChocolate.AspNetCore.Voyager;
 using HotChocolate.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -62,9 +60,6 @@ namespace WeDoTakeawayAPI.GraphQL
             }
 
             app.UseRouting();
-
-            app.UsePlayground();
-            app.UseVoyager();
 
             app.UseEndpoints(endpoints =>
             {
