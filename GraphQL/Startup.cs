@@ -55,8 +55,7 @@ namespace WeDoTakeawayAPI.GraphQL
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins("*");
-                        builder.WithHeaders("Authorization");
+                        builder.WithOrigins("*").AllowAnyHeader();
                     });
             });
         }
