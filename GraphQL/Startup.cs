@@ -56,6 +56,7 @@ namespace WeDoTakeawayAPI.GraphQL
                     builder =>
                     {
                         builder.WithOrigins("*");
+                        builder.WithHeaders("Authorization");
                     });
             });
         }
