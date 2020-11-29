@@ -1,0 +1,20 @@
+﻿{
+  "Label": null,
+  "Path": null,
+  "Data": {
+    "basketByOwnerId": {
+      "ownerId": "e46bbe60-c731-450d-8c44-f1f901ba0b24",
+      "basketType": "ANONYMOUS",
+      "items": [
+        {
+          "id": "04261a35-816a-4ac6-8157-a942d794b463",
+          "name": "Sausages"
+        }
+      ]
+    }
+  },
+  "Errors": null,
+  "Extensions": null,
+  "ContextData": null,
+  "HasNext": null
+}

@@ -42,6 +42,7 @@ namespace WeDoTakeawayAPI.GraphQL
                     .AddTypeExtension<SectionQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                     .AddTypeExtension<BasketMutations>()
+                .AddType<BasketType>()
                 .AddType<ItemType>()
                 .AddType<MenuType>()
                 .AddType<SectionType>()

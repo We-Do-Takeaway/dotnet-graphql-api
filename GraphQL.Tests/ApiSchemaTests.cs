@@ -7,6 +7,7 @@ using Snapshooter.Xunit;
 using System;
 using System.Threading.Tasks;
 using WeDoTakeawayAPI.GraphQL.Basket;
+using WeDoTakeawayAPI.GraphQL.Ingredient;
 using WeDoTakeawayAPI.GraphQL.Item;
 using WeDoTakeawayAPI.GraphQL.Menu;
 using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
@@ -29,12 +30,17 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
                 .BindRuntimeType<Guid, IdType>()
                 .AddTypeConverter<Guid, string>(from => from.ToString("D"))
                 .AddQueryType(d => d.Name("Query"))
-                .AddTypeExtension<BasketQueries>()
-                .AddTypeExtension<MenuQueries>()
+                    .AddTypeExtension<BasketQueries>()
+                    .AddTypeExtension<ItemQueries>()
+                    .AddTypeExtension<MenuQueries>()
+                    .AddTypeExtension<SectionQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
-                .AddTypeExtension<BasketMutations>()
+                    .AddTypeExtension<BasketMutations>()
+                .AddType<BasketType>()
+                .AddType<ItemType>()
                 .AddType<MenuType>()
                 .AddType<SectionType>()
+                .AddDataLoader<IngredientByIdDataLoader>()
                 .AddDataLoader<ItemByIdDataLoader>()
                 .AddDataLoader<MenuByIdDataLoader>()
                 .AddDataLoader<SectionByIdDataLoader>()

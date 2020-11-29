@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WeDoTakeawayAPI.GraphQL.Model;
@@ -9,9 +10,10 @@ using WeDoTakeawayAPI.GraphQL.Model;
 namespace WeDoTakeawayAPI.GraphQL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201128161802_BasketOwner")]
+    partial class BasketOwner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,9 +52,9 @@ namespace WeDoTakeawayAPI.GraphQL.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("basket_id");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("Qty")
                         .HasColumnType("integer")
-                        .HasColumnName("quantity");
+                        .HasColumnName("qty");
 
                     b.HasKey("ItemId", "BasketId");
 

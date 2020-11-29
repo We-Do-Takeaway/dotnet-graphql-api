@@ -1,0 +1,14 @@
+﻿{
+  "Label": null,
+  "Path": null,
+  "Data": {
+    "basketByOwnerId": {
+      "ownerId": "0ead61d8-dc83-4530-9518-7acbbf090824",
+      "basketType": "ANONYMOUS"
+    }
+  },
+  "Errors": null,
+  "Extensions": null,
+  "ContextData": null,
+  "HasNext": null
+}
