@@ -14,17 +14,18 @@ namespace WeDoTakeawayAPI.GraphQL.Basket
     public class BasketQueries
     {
         [UseApplicationDbContext]
-        public async Task<Model.Basket> GetBasketByCustomerId(
+        public async Task<Model.Basket> GetBasketByOwnerId(
             Guid id,
             [ScopedService] ApplicationDbContext dbContext,
             CancellationToken cancellationToken)
         {
+
             // Look for a basket in the DB
-            var customerId = id;
-            
+            Guid ownerId = id;
+
             Model.Basket basket = await dbContext.Baskets
-                .Where(b => b.CustomerId == customerId)
-                .Include(b => b.Items)
+                .Where(b => b.OwnerId == ownerId)
+                .Include(b => b.BasketItems)
                 .FirstOrDefaultAsync(cancellationToken);
 
             // If we found one and it was correct, use it
@@ -33,14 +34,14 @@ namespace WeDoTakeawayAPI.GraphQL.Basket
                 return basket;
             }
 
-            // Otherwise create a new one for the customer in the db and return that
-            basket = new Model.Basket {Id = new Guid(), CustomerId = customerId};
+            // Otherwise create a new one for the user in the db and return that
+            // Todo Check for authenticated user and use that to say the basket is for an owner
+            basket = new Model.Basket { Id = Guid.NewGuid(), OwnerId = ownerId, BasketType = BasketTypes.Anonymous };
 
             await dbContext.Baskets.AddAsync(basket, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
 
             return basket;
         }
-
     }
 }

@@ -11,19 +11,18 @@ namespace WeDoTakeawayAPI.GraphQL.Model
         [Required]
         [Column("item_id")]
         public Guid ItemId { get; set; }
-        
+
         public Item? Item { get; set; }
-        
+
         [Required]
         [Column("basket_id")]
         [GraphQLIgnore]
         public Guid BasketId { get; set; }
 
         public Basket? Basket { get; set; }
-        
+
         [Required]
-        [Column("qty")]
-        public int Qty { get; set; }
-        
+        [Column("quantity")]
+        public int Quantity { get; set; }
     }
 }

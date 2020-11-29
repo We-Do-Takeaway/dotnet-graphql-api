@@ -4,6 +4,7 @@ using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WeDoTakeawayAPI.GraphQL.Basket;
+using WeDoTakeawayAPI.GraphQL.Ingredient;
 using WeDoTakeawayAPI.GraphQL.Item;
 using WeDoTakeawayAPI.GraphQL.Menu;
 using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
@@ -16,7 +17,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
     public class BaseTests
     {
         protected IServiceProvider ServiceProvider { get; }
-        
+
         protected BaseTests()
         {
             var dbFileName = this.GetType().Name;
@@ -39,9 +40,11 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
                     .AddTypeExtension<SectionQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                     .AddTypeExtension<BasketMutations>()
+                .AddType<BasketType>()
                 .AddType<ItemType>()
                 .AddType<MenuType>()
                 .AddType<SectionType>()
+                .AddDataLoader<IngredientByIdDataLoader>()
                 .AddDataLoader<ItemByIdDataLoader>()
                 .AddDataLoader<MenuByIdDataLoader>()
                 .AddDataLoader<SectionByIdDataLoader>()
@@ -54,7 +57,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
             using var dbContext = factory.CreateDbContext();
             dbContext.Database.Migrate();
         }
-        
+
         protected ApplicationDbContext GetDbContext()
         {
             using var scope = ServiceProvider.CreateScope();

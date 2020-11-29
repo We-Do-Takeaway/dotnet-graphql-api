@@ -4,16 +4,18 @@
 }
 
 type Basket {
+  items: [BasketItem]
   id: ID!
-  customerId: ID!
-  items: [BasketItem!]!
+  ownerId: ID!
+  basketType: BasketTypes!
 }
 
 type BasketItem {
-  itemId: ID!
-  item: Item
-  basket: Basket
-  qty: Int!
+  id: ID!
+  name: String
+  description: String
+  photo: String
+  quantity: Int
 }
 
 type Item {
@@ -99,9 +101,11 @@ type PageInfo {
 }
 
 type Query {
-  basketByCustomerId(id: ID!): Basket!
+  basketByOwnerId(id: ID!): Basket!
+  itemById(id: ID!): Item!
   menus(first: Int after: String last: Int before: String): MenuConnection
   menuById(id: ID!): Menu!
+  sectionById(id: ID!): Section!
 }
 
 type Section {
@@ -152,7 +156,12 @@ input BasketItemDeleteInput {
 input BasketItemInput {
   basketId: ID!
   itemId: ID!
-  qty: Int!
+  quantity: Int!
+}
+
+enum BasketTypes {
+  ANONYMOUS
+  CUSTOMER
 }
 
 "The `@defer` directive may be provided for fragment spreads and inline fragments to inform the executor to delay the execution of the current fragment to indicate deprioritization of the current fragment. A query with `@defer` directive will cause the request to potentially return multiple responses, where non-deferred data is delivered in the initial response and data deferred is delivered in a subsequent response. `@include` and `@skip` take precedence over `@defer`."

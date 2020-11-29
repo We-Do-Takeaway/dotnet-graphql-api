@@ -1,0 +1,20 @@
+﻿{
+  "Label": null,
+  "Path": null,
+  "Data": {
+    "basketByOwnerId": {
+      "ownerId": "e46bbe60-c731-450d-8c44-f1f901ba0b24",
+      "basketType": "ANONYMOUS",
+      "items": [
+        {
+          "id": "600dca30-c6e2-4035-ad15-783c122d6ea4",
+          "name": "Plate of sausages"
+        }
+      ]
+    }
+  },
+  "Errors": null,
+  "Extensions": null,
+  "ContextData": null,
+  "HasNext": null
+}

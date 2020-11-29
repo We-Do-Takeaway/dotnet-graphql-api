@@ -19,29 +19,29 @@ namespace WeDoTakeawayAPI.GraphQL.Basket
             BasketItemInput input,
             [ScopedService] ApplicationDbContext dbContext)
         {
-            var (basketId, itemId, qty) = input;
-            
-            if (qty == 0)
+            var (basketId, itemId, quantity) = input;
+
+            if (quantity == 0)
             {
                 return new UpdateBasketPayload( new UserError("Invalid Item Quantity", "1003"));
             }
-            
+
             Model.Basket basket = await dbContext
                 .Baskets.Where(b => b.Id == basketId)
-                .Include(b => b.Items)
+                .Include(b => b.BasketItems)
                 .FirstOrDefaultAsync();
 
             if (basket == null)
             {
                 return new UpdateBasketPayload( new UserError("Invalid Basket ID", "1001"));
             }
-            
-            // See if there is an item with this ID already, if so then increase it's qty
-            var item = basket.Items.FirstOrDefault(i => i.ItemId == itemId);
+
+            // See if there is an item with this ID already, if so then increase it's quantity
+            var item = basket.BasketItems.FirstOrDefault(i => i.ItemId == itemId);
 
             if (item != null)
             {
-                item.Qty += qty;
+                item.Quantity += quantity;
             }
             else
             {
@@ -49,88 +49,89 @@ namespace WeDoTakeawayAPI.GraphQL.Basket
                 {
                     BasketId = basketId,
                     ItemId = itemId,
-                    Qty = qty
+                    Quantity = quantity
                 };
-                
-                basket.Items.Add(item);
+
+                basket.BasketItems.Add(item);
             }
-            
+
             await dbContext.SaveChangesAsync();
-            
+
             return new UpdateBasketPayload(basket);
         }
-        
+
         [UseApplicationDbContext]
         public async Task<UpdateBasketPayload> UpdateBasketItemAsync(
             BasketItemInput input,
             [ScopedService] ApplicationDbContext dbContext)
         {
-            var (basketId, itemId, qty) = input;
-            
+            var (basketId, itemId, quantity) = input;
+
             Model.Basket basket = await dbContext
                 .Baskets.Where(b => b.Id == basketId)
-                .Include(b => b.Items)
+                .Include(b => b.BasketItems)
                 .FirstOrDefaultAsync();
 
             if (basket == null)
             {
                 return new UpdateBasketPayload( new UserError("Invalid Basket ID", "1001"));
             }
-            
+
             // Check that the item exists
-            var item = basket.Items.FirstOrDefault(i => i.ItemId == itemId);
+            var item = basket.BasketItems.FirstOrDefault(i => i.ItemId == itemId);
 
             if (item == null)
             {
                 return new UpdateBasketPayload( new UserError("Invalid Basket Item ID", "1002"));
             }
 
-            if (qty > 0)
+            if (quantity > 0)
             {
-                item.Qty = qty;
+                item.Quantity = quantity;
             }
             else
             {
-                basket.Items.Remove(item);
+                basket.BasketItems.Remove(item);
                 dbContext.Remove(item);
             }
 
             await dbContext.SaveChangesAsync();
-            
+
             return new UpdateBasketPayload(basket);
         }
-        
+
         [UseApplicationDbContext]
         public async Task<UpdateBasketPayload> RemoveBasketItemAsync(
             BasketItemDeleteInput input,
             [ScopedService] ApplicationDbContext dbContext)
         {
             var (basketId, itemId) = input;
-            
+
             Model.Basket basket = await dbContext
                 .Baskets.Where(b => b.Id == basketId)
-                .Include(b => b.Items)
+                .Include(b => b.BasketItems)
                 .FirstOrDefaultAsync();
 
             if (basket == null)
             {
                 return new UpdateBasketPayload( new UserError("Invalid Basket ID", "1001"));
             }
-            
+
             // Check that the item exists
-            var item = basket.Items.FirstOrDefault(i => i.ItemId == itemId);
+            var item = basket.BasketItems.FirstOrDefault(i => i.ItemId == itemId);
 
             if (item == null)
             {
                 return new UpdateBasketPayload( new UserError("Invalid Basket Item ID", "1002"));
             }
 
-            basket.Items.Remove(item);
+            basket.BasketItems.Remove(item);
             dbContext.Remove(item);
+            await dbContext.SaveChangesAsync();
             
             return new UpdateBasketPayload(basket);
         }
-        
+
         [UseApplicationDbContext]
         public async Task<UpdateBasketPayload> ClearBasketAsync(
             Guid id,
@@ -138,15 +139,15 @@ namespace WeDoTakeawayAPI.GraphQL.Basket
         {
             Model.Basket basket = await dbContext
                 .Baskets.Where(b => b.Id == id)
-                .Include(b => b.Items)
+                .Include(b => b.BasketItems)
                 .FirstOrDefaultAsync();
 
             if (basket == null)
             {
                 return new UpdateBasketPayload( new UserError("Invalid Basket ID", "1001"));
             }
-            
-            basket.Items.Clear();
+
+            basket.BasketItems.Clear();
 
             await dbContext.SaveChangesAsync();
             return new UpdateBasketPayload(basket);

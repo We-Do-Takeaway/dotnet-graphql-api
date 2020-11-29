@@ -1,0 +1,15 @@
+﻿{
+  "Label": null,
+  "Path": null,
+  "Data": {
+    "basketByOwnerId": {
+      "ownerId": "600dca30-c6e2-4035-ad15-783c122d6ea6",
+      "basketType": "ANONYMOUS",
+      "items": []
+    }
+  },
+  "Errors": null,
+  "Extensions": null,
+  "ContextData": null,
+  "HasNext": null
+}
