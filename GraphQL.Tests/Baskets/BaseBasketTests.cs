@@ -9,7 +9,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
     {
         protected async Task CreateBasketWithItem(Guid basketId, Guid ownerId, Guid itemId)
         {
-            var dbContext = GetDbContext();
+            ApplicationDbContext dbContext = GetDbContext();
 
             var basket = new Model.Basket { Id = basketId, OwnerId = ownerId, BasketType = BasketTypes.Anonymous };
             await dbContext.Baskets.AddAsync(basket);
@@ -22,7 +22,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 
         protected async Task CreateEmptyBasket(Guid basketId, Guid ownerId)
         {
-            var dbContext = GetDbContext();
+            ApplicationDbContext dbContext = GetDbContext();
             var basket = new Model.Basket { Id = basketId, OwnerId = ownerId, BasketType = BasketTypes.Anonymous };
             await dbContext.Baskets.AddAsync(basket);
             await dbContext.SaveChangesAsync();
@@ -37,9 +37,9 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
                 Quantity = quantity
             };
 
-            var dbContext = GetDbContext();
+            ApplicationDbContext dbContext = GetDbContext();
 
-            var basket = await dbContext.Baskets.FindAsync(basketId);
+            Model.Basket basket = await dbContext.Baskets.FindAsync(basketId);
             basket.BasketItems.Add(item);
             await dbContext.SaveChangesAsync();
         }

@@ -7,6 +7,7 @@ using Snapshooter.Xunit;
 using System;
 using System.Threading.Tasks;
 using WeDoTakeawayAPI.GraphQL.Basket;
+using WeDoTakeawayAPI.GraphQL.Basket.Mutations;
 using WeDoTakeawayAPI.GraphQL.Ingredient;
 using WeDoTakeawayAPI.GraphQL.Item;
 using WeDoTakeawayAPI.GraphQL.Menu;
@@ -35,7 +36,10 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
                     .AddTypeExtension<MenuQueries>()
                     .AddTypeExtension<SectionQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
-                    .AddTypeExtension<BasketMutations>()
+                    .AddTypeExtension<AddBasketItemMutations>()
+                    .AddTypeExtension<ClearBasketMutations>()
+                    .AddTypeExtension<RemoveBasketItemMutations>()
+                    .AddTypeExtension<UpdateBasketItemMutations>()
                 .AddType<BasketType>()
                 .AddType<ItemType>()
                 .AddType<MenuType>()
