@@ -3,7 +3,7 @@ using System;
 namespace WeDoTakeawayAPI.GraphQL.Basket
 {
     public record BasketItemInput(
-        Guid BasketId,
+        Guid OwnerId,
         Guid ItemId,
         int Quantity
     );
