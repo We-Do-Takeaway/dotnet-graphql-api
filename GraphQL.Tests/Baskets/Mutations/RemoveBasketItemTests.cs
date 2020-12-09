@@ -9,13 +9,13 @@ using WeDoTakeawayAPI.GraphQL.Basket;
 using Xunit;
 
 
-namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
+namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
 {
     public class RemoveBasketItemTests:BaseBasketTests
     {
-        private async Task<dynamic> RemoveBasketItem(Guid basketId, Guid itemId)
+        private async Task<dynamic> RemoveBasketItem(Guid ownerId, Guid itemId)
         {
-            var basketItemDeleteInput = new BasketItemDeleteInput(basketId, itemId);
+            var basketItemDeleteInput = new BasketItemDeleteInput(ownerId, itemId);
 
             IExecutionResult result = await ServiceProvider.ExecuteRequestAsync(
                 QueryRequestBuilder
@@ -48,7 +48,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 
             Assert.NotNull(json);
 
-            var response = JsonConvert.DeserializeObject<ExpandoObject>(json, new ExpandoObjectConverter());
+            ExpandoObject response = JsonConvert.DeserializeObject<ExpandoObject>(json, new ExpandoObjectConverter());
 
             Assert.NotNull(response);
 
@@ -65,7 +65,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 
             await CreateBasketWithItem(basketId, ownerId, itemId);
 
-            dynamic response = await RemoveBasketItem(basketId, itemId);
+            dynamic response = await RemoveBasketItem(ownerId, itemId);
 
             // Check that errors is empty
             Assert.Null(response.data.removeBasketItem.errors);
@@ -94,7 +94,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
             await AddItem(basketId, itemId2);
 
             // Make a call to remove the plate of sausages
-            dynamic response = await RemoveBasketItem(basketId, itemId1);
+            dynamic response = await RemoveBasketItem(ownerId, itemId1);
 
             // Check that errors is empty
             Assert.Null(response.data.removeBasketItem.errors);
@@ -115,7 +115,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 
             await CreateBasketWithItem(basketId, ownerId, itemId);
 
-            dynamic response = await RemoveBasketItem(basketId, badItemId);
+            dynamic response = await RemoveBasketItem(ownerId, badItemId);
 
             // Check that errors object has an entry
             Assert.NotNull(response.data.removeBasketItem.errors);
@@ -135,11 +135,11 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
             var basketId = Guid.Parse("8d404353-ecb6-4aee-8a54-ff85e0f7332a");
             var ownerId = Guid.Parse("0ead61d8-dc83-4530-9518-7acbbf090824");
             var itemId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea4"); // plate of sausages
-            var badBasketId = Guid.NewGuid();
+            var badOwnerId = Guid.NewGuid();
 
             await CreateBasketWithItem(basketId, ownerId, itemId);
 
-            dynamic response = await RemoveBasketItem(badBasketId, itemId);
+            dynamic response = await RemoveBasketItem(badOwnerId, itemId);
 
             // Check that errors object has an entry
             Assert.NotNull(response.data.removeBasketItem.errors);

@@ -33,6 +33,11 @@ namespace WeDoTakeawayAPI.GraphQL.Model
                 .HasConversion(
                     v => v.ToString(),
                     v => (BasketTypes)Enum.Parse(typeof(BasketTypes), v));
+
+            modelBuilder
+                .Entity<Basket>()
+                .HasIndex(b => b.OwnerId)
+                .IsUnique();
         }
 
         public DbSet<Basket> Baskets { get; set; } = default!;

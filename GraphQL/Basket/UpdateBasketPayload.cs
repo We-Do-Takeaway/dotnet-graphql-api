@@ -9,7 +9,7 @@ namespace WeDoTakeawayAPI.GraphQL.Basket
 
         public UpdateBasketPayload(Model.Basket basket)
         {
-        Basket = basket;
+            Basket = basket;
         }
 
         public UpdateBasketPayload(UserError error)

@@ -7,21 +7,22 @@ using HotChocolate.Execution;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using WeDoTakeawayAPI.GraphQL.Model;
 using Xunit;
 
 
-namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
+namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
 {
     public class ClearBasketTests:BaseBasketTests
     {
-        private async Task<dynamic> ClearBasket(Guid basketId)
+        private async Task<dynamic> ClearBasket(Guid ownerId)
         {
             IExecutionResult result = await ServiceProvider.ExecuteRequestAsync(
                 QueryRequestBuilder
                     .New()
                     .SetQuery(@"
-                        mutation ClearBasket($id: ID!) {
-                          clearBasket(id: $id) {
+                        mutation ClearBasketByOwnerId($id: ID!) {
+                          clearBasketByOwnerId(id: $id) {
                             basket {
                               id
                               ownerId
@@ -37,7 +38,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
                           }
                         }
                     ")
-                    .SetVariableValue(name: "id", value: basketId.ToString())
+                    .SetVariableValue(name: "id", value: ownerId.ToString())
                     .Create()
             );
 
@@ -64,13 +65,13 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 
             await CreateBasketWithItem(basketId, ownerId, itemId);
 
-            dynamic response = await ClearBasket(basketId);
+            dynamic response = await ClearBasket(ownerId);
 
             // Check that errors is empty
-            Assert.Null(response.data.clearBasket.errors);
+            Assert.Null(response.data.clearBasketByOwnerId.errors);
 
             // Now validate that we have a clear basket
-            var basket = response.data.clearBasket.basket;
+            dynamic basket = response.data.clearBasketByOwnerId.basket;
             Assert.Equal(basketId.ToString(), basket.id);
             Assert.Equal(ownerId.ToString(), basket.ownerId);
             Assert.Equal(0, basket.items.Count);
@@ -83,15 +84,15 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
             var basketId = Guid.Parse("8d404353-ecb6-4aee-8a54-ff85e0f7332a");
             var ownerId = Guid.Parse("0ead61d8-dc83-4530-9518-7acbbf090824");
 
-            await CreateEmptyBasket(basketId ,  ownerId);
+            await CreateEmptyBasket(basketId,  ownerId);
 
-            var response = await ClearBasket(basketId);
+            dynamic response = await ClearBasket(ownerId);
 
             // Check that errors is empty
-            Assert.Null(response.data.clearBasket.errors);
+            Assert.Null(response.data.clearBasketByOwnerId.errors);
 
             // Now validate that we have a clear basket
-            var basket = response.data.clearBasket.basket;
+            dynamic basket = response.data.clearBasketByOwnerId.basket;
             Assert.Equal(basketId.ToString(), basket.id);
             Assert.Equal(ownerId.ToString(), basket.ownerId);
             Assert.Equal(0, basket.items.Count);
@@ -105,10 +106,10 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 
             await CreateEmptyBasket(basketId ,  ownerId);
 
-            await ClearBasket(basketId);
+            await ClearBasket(ownerId);
 
-            var dbContext = GetDbContext();
-            var basket = await dbContext
+            ApplicationDbContext dbContext = GetDbContext();
+            Model.Basket basket = await dbContext
                 .Baskets.Where(b => b.Id == basketId)
                 .Include(b => b.BasketItems)
                 .FirstOrDefaultAsync();
@@ -121,19 +122,19 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
         [Fact]
         public async Task Clear_Invalid_Basket_Response()
         {
-            var badBasketId = Guid.NewGuid();
+            var badOwnerId = Guid.NewGuid();
 
-            var response = await ClearBasket(badBasketId);
+            dynamic response = await ClearBasket(badOwnerId);
 
             // Check that errors object has an entry
-            Assert.NotNull(response.data.clearBasket.errors);
+            Assert.NotNull(response.data.clearBasketByOwnerId.errors);
 
             // Check that the basket item is null
-            Assert.Null(response.data.clearBasket.basket);
+            Assert.Null(response.data.clearBasketByOwnerId.basket);
 
             // Now check we have the correct error
-            Assert.Equal("1001", response.data.clearBasket.errors[0].code);
-            Assert.Equal("Invalid Basket ID", response.data.clearBasket.errors[0].message);
+            Assert.Equal("1001", response.data.clearBasketByOwnerId.errors[0].code);
+            Assert.Equal("Invalid basket owner ID", response.data.clearBasketByOwnerId.errors[0].message);
         }
     }
 }

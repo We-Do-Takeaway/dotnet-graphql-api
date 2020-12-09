@@ -83,9 +83,9 @@ type MenuEdge {
 
 type Mutation {
   addBasketItem(input: BasketItemInput!): UpdateBasketPayload!
-  updateBasketItem(input: BasketItemInput!): UpdateBasketPayload!
+  clearBasketByOwnerId(id: ID!): UpdateBasketPayload!
   removeBasketItem(input: BasketItemDeleteInput!): UpdateBasketPayload!
-  clearBasket(id: ID!): UpdateBasketPayload!
+  updateBasketItem(input: BasketItemInput!): UpdateBasketPayload!
 }
 
 "Information about pagination in a connection."
@@ -149,12 +149,12 @@ type UserError {
 }
 
 input BasketItemDeleteInput {
-  basketId: ID!
+  ownerId: ID!
   itemId: ID!
 }
 
 input BasketItemInput {
-  basketId: ID!
+  ownerId: ID!
   itemId: ID!
   quantity: Int!
 }

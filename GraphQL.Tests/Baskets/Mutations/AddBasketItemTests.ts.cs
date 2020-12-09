@@ -8,13 +8,13 @@ using Newtonsoft.Json.Converters;
 using WeDoTakeawayAPI.GraphQL.Basket;
 using Xunit;
 
-namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
+namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
 {
     public class AddBasketItemTests:BaseBasketTests
     {
-        private async Task<dynamic> AddItemToBasket(Guid basketId, Guid itemId, int quantity)
+        private async Task<dynamic> AddItemToBasket(Guid ownerId, Guid itemId, int quantity)
         {
-            var basketItemInput = new BasketItemInput(basketId, itemId, quantity);
+            var basketItemInput = new BasketItemInput(ownerId, itemId, quantity);
 
             IExecutionResult result = await ServiceProvider.ExecuteRequestAsync(
                 QueryRequestBuilder
@@ -47,7 +47,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 
             Assert.NotNull(json);
 
-            var response = JsonConvert.DeserializeObject<ExpandoObject>(json, new ExpandoObjectConverter());
+            ExpandoObject response = JsonConvert.DeserializeObject<ExpandoObject>(json, new ExpandoObjectConverter());
 
             Assert.NotNull(response);
 
@@ -64,7 +64,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 
             await CreateEmptyBasket(basketId ,  ownerId);
 
-            dynamic response = await AddItemToBasket(basketId, itemId, 1);
+            dynamic response = await AddItemToBasket(ownerId, itemId, 1);
 
             // Check that errors is empty
             Assert.Null(response.data.addBasketItem.errors);
@@ -85,7 +85,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 
             await CreateBasketWithItem(basketId, ownerId, itemId);
 
-            dynamic response = await AddItemToBasket(basketId, itemId, 2);
+            dynamic response = await AddItemToBasket(ownerId, itemId, 2);
 
             // Check that errors is empty
             Assert.Null(response.data.addBasketItem.errors);
@@ -99,10 +99,10 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
         [Fact]
         public async Task Add_NewItem_To_Invalid_Basket()
         {
-            var badBasketId = Guid.NewGuid();
+            var badOwnerId = Guid.NewGuid();
             var itemId = Guid.Parse("600dca30-c6e2-4035-ad15-783c122d6ea4"); // plate of sausages
 
-            dynamic response = await AddItemToBasket(badBasketId, itemId, 1);
+            dynamic response = await AddItemToBasket(badOwnerId, itemId, 1);
 
             // Check that errors object has an entry
             Assert.NotNull(response.data.addBasketItem.errors);
@@ -112,7 +112,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 
             // Now check we have the correct error
             Assert.Equal("1001", response.data.addBasketItem.errors[0].code);
-            Assert.Equal("Invalid Basket ID", response.data.addBasketItem.errors[0].message);
+            Assert.Equal("Invalid basket owner ID", response.data.addBasketItem.errors[0].message);
         }
 
         // When quantity is set to 0 when adding an item, return an error
@@ -125,7 +125,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets
 
             await CreateEmptyBasket(basketId ,  ownerId);
 
-            dynamic response = await AddItemToBasket(basketId, itemId, 0);
+            dynamic response = await AddItemToBasket(ownerId, itemId, 0);
 
             // Check that errors object has an entry
             Assert.NotNull(response.data.addBasketItem.errors);
