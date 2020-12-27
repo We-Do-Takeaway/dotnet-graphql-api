@@ -10,6 +10,7 @@ using WeDoTakeawayAPI.GraphQL.Item;
 using WeDoTakeawayAPI.GraphQL.Menu;
 using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
 using WeDoTakeawayAPI.GraphQL.Model;
+using WeDoTakeawayAPI.GraphQL.Order;
 using WeDoTakeawayAPI.GraphQL.Section;
 using WeDoTakeawayAPI.GraphQL.Section.DataLoaders;
 
@@ -38,15 +39,18 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
                     .AddTypeExtension<BasketQueries>()
                     .AddTypeExtension<ItemQueries>()
                     .AddTypeExtension<MenuQueries>()
+                    .AddTypeExtension<OrderQueries>()
                     .AddTypeExtension<SectionQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                     .AddTypeExtension<AddBasketItemMutations>()
                     .AddTypeExtension<ClearBasketMutations>()
                     .AddTypeExtension<RemoveBasketItemMutations>()
                     .AddTypeExtension<UpdateBasketItemMutations>()
+                    .AddTypeExtension<AddOrderMutation>()
                 .AddType<BasketType>()
                 .AddType<ItemType>()
                 .AddType<MenuType>()
+                .AddType<OrderType>()
                 .AddType<SectionType>()
                 .AddDataLoader<IngredientByIdDataLoader>()
                 .AddDataLoader<ItemByIdDataLoader>()
@@ -55,18 +59,18 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
                 .Services
                 .BuildServiceProvider();
 
-            using var scope = ServiceProvider.CreateScope();
-            var factory = scope.ServiceProvider.GetService<IDbContextFactory<ApplicationDbContext>>();
+            using IServiceScope scope = ServiceProvider.CreateScope();
+            IDbContextFactory<ApplicationDbContext> factory = scope.ServiceProvider.GetService<IDbContextFactory<ApplicationDbContext>>();
             if (factory == null) return;
-            using var dbContext = factory.CreateDbContext();
+            using ApplicationDbContext dbContext = factory.CreateDbContext();
             dbContext.Database.Migrate();
         }
 
         protected ApplicationDbContext GetDbContext()
         {
-            using var scope = ServiceProvider.CreateScope();
-            var factory = scope.ServiceProvider.GetService<IDbContextFactory<ApplicationDbContext>>();
-            var dbContext = factory?.CreateDbContext();
+            using IServiceScope scope = ServiceProvider.CreateScope();
+            IDbContextFactory<ApplicationDbContext> factory = scope.ServiceProvider.GetService<IDbContextFactory<ApplicationDbContext>>();
+            ApplicationDbContext dbContext = factory?.CreateDbContext();
             return dbContext;
         }
     }
