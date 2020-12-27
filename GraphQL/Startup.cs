@@ -13,6 +13,7 @@ using WeDoTakeawayAPI.GraphQL.Item;
 using WeDoTakeawayAPI.GraphQL.Menu;
 using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
 using WeDoTakeawayAPI.GraphQL.Model;
+using WeDoTakeawayAPI.GraphQL.Order;
 using WeDoTakeawayAPI.GraphQL.Section;
 using WeDoTakeawayAPI.GraphQL.Section.DataLoaders;
 
@@ -40,15 +41,18 @@ namespace WeDoTakeawayAPI.GraphQL
                     .AddTypeExtension<BasketQueries>()
                     .AddTypeExtension<ItemQueries>()
                     .AddTypeExtension<MenuQueries>()
+                    .AddTypeExtension<OrderQueries>()
                     .AddTypeExtension<SectionQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                     .AddTypeExtension<AddBasketItemMutations>()
                     .AddTypeExtension<ClearBasketMutations>()
                     .AddTypeExtension<RemoveBasketItemMutations>()
                     .AddTypeExtension<UpdateBasketItemMutations>()
+                    .AddTypeExtension<AddOrderMutation>()
                 .AddType<BasketType>()
                 .AddType<ItemType>()
                 .AddType<MenuType>()
+                .AddType<OrderType>()
                 .AddType<SectionType>()
                 .AddDataLoader<IngredientByIdDataLoader>()
                 .AddDataLoader<ItemByIdDataLoader>()
