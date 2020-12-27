@@ -38,6 +38,15 @@ namespace WeDoTakeawayAPI.GraphQL.Model
                 .Entity<Basket>()
                 .HasIndex(b => b.OwnerId)
                 .IsUnique();
+
+            // Many-to-many: Order <-> Item
+            modelBuilder
+                .Entity<OrderItem>()
+                .HasKey(oi => new {oi.ItemId, oi.OrderId});
+
+            modelBuilder
+                .Entity<Order>()
+                .HasIndex(o => o.OwnerId);
         }
 
         public DbSet<Basket> Baskets { get; set; } = default!;
@@ -48,10 +57,16 @@ namespace WeDoTakeawayAPI.GraphQL.Model
 
         public DbSet<Item> Items { get; set; } = default!;
 
+        public DbSet<ItemIngredient> ItemIngredients { get; set; } = default!;
+
         public DbSet<Menu> Menus { get; set; } = default!;
+
+
+        public DbSet<Order> Orders { get; set; } = default!;
+
+        public DbSet<OrderItem> OrderItems { get; set; } = default!;
 
         public DbSet<Section> Sections { get; set; } = default!;
 
-        public DbSet<ItemIngredient> ItemIngredients { get; set; } = default!;
     }
 }
