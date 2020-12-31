@@ -15,24 +15,26 @@ namespace WeDoTakeawayAPI.GraphQL.Item
         private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
         public ItemByIdDataLoader(
-            IBatchScheduler batchScheduler, 
+            IBatchScheduler batchScheduler,
             IDbContextFactory<ApplicationDbContext> dbContextFactory)
             : base(batchScheduler)
         {
-            _dbContextFactory = dbContextFactory ?? 
+            _dbContextFactory = dbContextFactory ??
                                 throw new ArgumentNullException(nameof(dbContextFactory));
         }
 
         protected override async Task<IReadOnlyDictionary<Guid, Model.Item>> LoadBatchAsync(
-            IReadOnlyList<Guid> keys, 
+            IReadOnlyList<Guid> keys,
             CancellationToken cancellationToken)
         {
-            await using ApplicationDbContext dbContext = 
+            await using ApplicationDbContext dbContext =
                 _dbContextFactory.CreateDbContext();
-            
-            return await dbContext.Items
+
+            Dictionary<Guid, Model.Item>? result =  await dbContext.Items
                 .Where(i => keys.Contains(i.Id))
                 .ToDictionaryAsync(t => t.Id, cancellationToken);
+
+            return result;
         }
     }
 }

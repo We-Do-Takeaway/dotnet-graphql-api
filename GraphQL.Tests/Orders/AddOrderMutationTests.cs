@@ -44,10 +44,6 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Orders
                               id
                               createdAt
                             }
-                            errors {
-                              code
-                              message
-                            }
                           }
                         }
                     ")
@@ -77,9 +73,6 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Orders
                 Guid.Parse("600DCA30-C6E2-4035-AD15-783C122D6EA5")
             };
             dynamic response = await AddOrderForItem(itemIds);
-
-            // Make sure there were no errors
-            Assert.Null(response.data.addOrder.errors);
 
             // Check the response includes an order id
             Assert.True(Guid.TryParse(response.data.addOrder.order.id as string, out _));
@@ -122,9 +115,8 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Orders
             dynamic response = await AddOrderForItem(itemIds);
 
             // Look for the error
-            Assert.NotNull(response.data.addOrder.errors);
-            Assert.Equal("1012", response.data.addOrder.errors[0].code);
-            Assert.Equal("Invalid order item id", response.data.addOrder.errors[0].message);
+            Assert.Equal("1012", response.errors[0].extensions.code);
+            Assert.Equal("Invalid order item id", response.errors[0].message);
         }
 
         [Fact]
@@ -137,9 +129,8 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Orders
             dynamic response = await AddOrderForItem(itemIds, 0);
 
             // Look for the error
-            Assert.NotNull(response.data.addOrder.errors);
-            Assert.Equal("1011", response.data.addOrder.errors[0].code);
-            Assert.Equal("Invalid order item quantity", response.data.addOrder.errors[0].message);
+            Assert.Equal("1011", response.errors[0].extensions.code);
+            Assert.Equal("Invalid order item quantity", response.errors[0].message);
         }
 
         [Fact]
@@ -152,9 +143,8 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Orders
             dynamic response = await AddOrderForItem(itemIds, 102);
 
             // Look for the error
-            Assert.NotNull(response.data.addOrder.errors);
-            Assert.Equal("1011", response.data.addOrder.errors[0].code);
-            Assert.Equal("Invalid order item quantity", response.data.addOrder.errors[0].message);
+            Assert.Equal("1011", response.errors[0].extensions.code);
+            Assert.Equal("Invalid order item quantity", response.errors[0].message);
         }
 
         [Fact]
@@ -163,9 +153,8 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Orders
             dynamic response = await AddOrderForItem(new List<Guid>());
 
             // Look for the error
-            Assert.NotNull(response.data.addOrder.errors);
-            Assert.Equal("1010", response.data.addOrder.errors[0].code);
-            Assert.Equal("No items to order", response.data.addOrder.errors[0].message);
+            Assert.Equal("1010", response.errors[0].extensions.code);
+            Assert.Equal("No items to order", response.errors[0].message);
         }
     }
 }

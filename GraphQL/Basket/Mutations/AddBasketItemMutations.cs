@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
-using WeDoTakeawayAPI.GraphQL.Common;
 using WeDoTakeawayAPI.GraphQL.Extensions;
 using WeDoTakeawayAPI.GraphQL.Model;
 
@@ -22,7 +23,8 @@ namespace WeDoTakeawayAPI.GraphQL.Basket.Mutations
 
             if (quantity == 0)
             {
-                return new UpdateBasketPayload( new UserError("Invalid Item Quantity", "1003"));
+                Error error = new("Invalid item quantity", "1003");
+                throw new QueryException(error);
             }
 
             Model.Basket basket = await dbContext
@@ -32,7 +34,13 @@ namespace WeDoTakeawayAPI.GraphQL.Basket.Mutations
 
             if (basket == null)
             {
-                return new UpdateBasketPayload( new UserError("Invalid basket owner ID", "1001"));
+                var extensions = new Dictionary<string, object?>() {
+                    { "code", "1001" },
+                    {"id", ownerId}
+                };
+
+                Error error = new("Invalid basket owner id", extensions: extensions);
+                throw new QueryException(error);
             }
 
             // See if there is an item with this ID already, if so then increase it's quantity

@@ -31,10 +31,6 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
                                 quantity
                               }
                             }
-                            errors {
-                              code
-                              message
-                            }
                           }
                         }
                     ")
@@ -48,7 +44,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
 
             Assert.NotNull(json);
 
-            var response = JsonConvert.DeserializeObject<ExpandoObject>(json, new ExpandoObjectConverter());
+            ExpandoObject response = JsonConvert.DeserializeObject<ExpandoObject>(json, new ExpandoObjectConverter());
 
             Assert.NotNull(response);
 
@@ -67,9 +63,6 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
 
             dynamic response = await ClearBasket(ownerId);
 
-            // Check that errors is empty
-            Assert.Null(response.data.clearBasketByOwnerId.errors);
-
             // Now validate that we have a clear basket
             dynamic basket = response.data.clearBasketByOwnerId.basket;
             Assert.Equal(basketId.ToString(), basket.id);
@@ -87,9 +80,6 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
             await CreateEmptyBasket(basketId,  ownerId);
 
             dynamic response = await ClearBasket(ownerId);
-
-            // Check that errors is empty
-            Assert.Null(response.data.clearBasketByOwnerId.errors);
 
             // Now validate that we have a clear basket
             dynamic basket = response.data.clearBasketByOwnerId.basket;
@@ -127,14 +117,11 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
             dynamic response = await ClearBasket(badOwnerId);
 
             // Check that errors object has an entry
-            Assert.NotNull(response.data.clearBasketByOwnerId.errors);
-
-            // Check that the basket item is null
-            Assert.Null(response.data.clearBasketByOwnerId.basket);
+            Assert.NotNull(response.errors);
 
             // Now check we have the correct error
-            Assert.Equal("1001", response.data.clearBasketByOwnerId.errors[0].code);
-            Assert.Equal("Invalid basket owner ID", response.data.clearBasketByOwnerId.errors[0].message);
+            Assert.Equal("1001", response.errors[0].extensions.code);
+            Assert.Equal("Invalid basket owner id", response.errors[0].message);
         }
     }
 }
