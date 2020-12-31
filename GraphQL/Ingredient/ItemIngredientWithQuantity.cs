@@ -1,5 +1,6 @@
 using System;
 using HotChocolate;
+using HotChocolate.Types;
 
 namespace WeDoTakeawayAPI.GraphQL.Ingredient
 {
@@ -27,5 +28,9 @@ namespace WeDoTakeawayAPI.GraphQL.Ingredient
         public string? Description { get; }
         public string? Photo { get; }
         public int? Quantity { get; }
+    }
+
+    public class ItemIngredientWithQuantityType : ObjectType<ItemIngredientWithQuantity>
+    {
     }
 }

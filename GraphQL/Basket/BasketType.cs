@@ -18,6 +18,7 @@ namespace WeDoTakeawayAPI.GraphQL.Basket
         {
             descriptor
                 .Field(b => b.BasketItems)
+                .Type<NonNullType<ListType<NonNullType<BasketItemExpandedType>>>>()
                 .ResolveWith<BasketResolvers>(t =>
                     t.GetItemsAsync(
                         default!,
@@ -26,7 +27,8 @@ namespace WeDoTakeawayAPI.GraphQL.Basket
                     )
                 )
                 .UseDbContext<ApplicationDbContext>()
-                .Name("items");
+                .Name("items")
+                ;
         }
 
         private class BasketResolvers
@@ -38,7 +40,7 @@ namespace WeDoTakeawayAPI.GraphQL.Basket
                 CancellationToken cancellationToken)
             {
                 // Get all the basketitem records and their associated item records for this basket
-                var basketItems = await dbContext.BasketItems
+                BasketItem[] basketItems = await dbContext.BasketItems
                     .Where(bi => bi.BasketId == basket.Id)
                     .Include(bi => bi.Item)
                     .ToArrayAsync(cancellationToken);

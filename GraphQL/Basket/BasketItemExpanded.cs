@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using HotChocolate;
+using HotChocolate.Types;
 
 namespace WeDoTakeawayAPI.GraphQL.Basket
 {
@@ -31,5 +32,10 @@ namespace WeDoTakeawayAPI.GraphQL.Basket
         public string? Photo { get; set; }
 
         public int? Quantity { get; }
+    }
+
+    public class BasketItemExpandedType : ObjectType<BasketItemExpanded>
+    {
+
     }
 }
