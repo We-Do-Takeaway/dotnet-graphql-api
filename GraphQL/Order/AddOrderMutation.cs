@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
-using WeDoTakeawayAPI.GraphQL.Common;
 using WeDoTakeawayAPI.GraphQL.Extensions;
 using WeDoTakeawayAPI.GraphQL.Model;
 
@@ -21,13 +21,15 @@ namespace WeDoTakeawayAPI.GraphQL.Order
             // Check that there are quantities
             if (!input.Items.Any())
             {
-                return new AddOrderPayload( new UserError("No items to order", "1010"));
+                Error error = new("No items to order", "1010");
+                throw new QueryException(error);
             }
 
             // Check the quantities are valid
             if (input.Items.Any(item => item.Quantity < 1 || item.Quantity > 99))
             {
-                return new AddOrderPayload( new UserError("Invalid order item quantity", "1011"));
+                Error error = new ("Invalid order item quantity", "1011");
+                throw new QueryException(error);
             }
 
             // Check that the items provided exist in the db
@@ -37,7 +39,8 @@ namespace WeDoTakeawayAPI.GraphQL.Order
 
             if (dbItems.Length != input.Items.Count())
             {
-                return new AddOrderPayload( new UserError("Invalid order item id", "1012"));
+                Error error = new("Invalid order item id", "1012");
+                throw new QueryException(error);
             }
 
             // Create the order object.

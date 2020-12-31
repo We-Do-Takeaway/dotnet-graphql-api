@@ -24,7 +24,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
         [Fact]
         public async Task Verify_Schema()
         {
-            var schema = await new ServiceCollection()
+            ISchema schema = await new ServiceCollection()
                 .AddPooledDbContextFactory<ApplicationDbContext>
                     (options => options.UseSqlite("Data Source=WeDoTakeawayAPISchemaTests.db"))
                 .AddGraphQL()

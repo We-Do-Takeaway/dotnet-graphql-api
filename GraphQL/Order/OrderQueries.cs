@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using WeDoTakeawayAPI.GraphQL.Model;
@@ -24,6 +26,17 @@ namespace WeDoTakeawayAPI.GraphQL.Order
                 .Where(o => o.Id == id)
                 .Include(o => o.OrderItems)
                 .FirstOrDefaultAsync(cancellationToken);
+
+            if (order == null)
+            {
+                var extensions = new Dictionary<string, object?>() {
+                    { "code", "9001" },
+                    { "id", id}
+                };
+
+                Error error = new("Invalid id", extensions: extensions);
+                throw new QueryException(error);
+            }
 
             return order;
         }

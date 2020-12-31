@@ -31,10 +31,6 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
                                 quantity
                               }
                             }
-                            errors {
-                              code
-                              message
-                            }
                           }
                         }
                     ")
@@ -67,9 +63,6 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
 
             dynamic response = await RemoveBasketItem(ownerId, itemId);
 
-            // Check that errors is empty
-            Assert.Null(response.data.removeBasketItem.errors);
-
             // Now validate that the item has been updated
             Assert.Equal(0, response.data.removeBasketItem.basket.items.Count);
         }
@@ -96,9 +89,6 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
             // Make a call to remove the plate of sausages
             dynamic response = await RemoveBasketItem(ownerId, itemId1);
 
-            // Check that errors is empty
-            Assert.Null(response.data.removeBasketItem.errors);
-
             // Now validate that the item has been updated
             Assert.Equal(1, response.data.removeBasketItem.basket.items.Count);
             Assert.Equal(itemId2.ToString(), response.data.removeBasketItem.basket.items[0].id.ToString());
@@ -118,14 +108,11 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
             dynamic response = await RemoveBasketItem(ownerId, badItemId);
 
             // Check that errors object has an entry
-            Assert.NotNull(response.data.removeBasketItem.errors);
-
-            // Check that the basket item is null
-            Assert.Null(response.data.removeBasketItem.basket);
+            Assert.NotNull(response.errors);
 
             // Now check we have the correct error
-            Assert.Equal("1002", response.data.removeBasketItem.errors[0].code);
-            Assert.Equal("Invalid Basket Item ID", response.data.removeBasketItem.errors[0].message);
+            Assert.Equal("1002", response.errors[0].extensions.code);
+            Assert.Equal("Invalid basket item id", response.errors[0].message);
         }
 
         // When the basket doesn't exist
@@ -142,13 +129,10 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Baskets.Mutations
             dynamic response = await RemoveBasketItem(badOwnerId, itemId);
 
             // Check that errors object has an entry
-            Assert.NotNull(response.data.removeBasketItem.errors);
-
-            // Check that the basket item is null
-            Assert.Null(response.data.removeBasketItem.basket);
+            Assert.NotNull(response.errors);
 
             // Now check we have the correct error
-            Assert.Equal("1001", response.data.removeBasketItem.errors[0].code);
+            Assert.Equal("1001", response.errors[0].extensions.code);
         }
     }
 }

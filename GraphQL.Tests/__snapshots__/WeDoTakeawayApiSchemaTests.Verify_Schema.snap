@@ -140,12 +140,6 @@ type SectionEdge {
 
 type UpdateBasketPayload {
   basket: Basket
-  errors: [UserError!]
-}
-
-type UserError {
-  message: String!
-  code: String!
 }
 
 input BasketItemDeleteInput {
