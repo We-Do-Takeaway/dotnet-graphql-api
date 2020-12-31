@@ -4,7 +4,7 @@
 }
 
 type Basket {
-  items: [BasketItem]
+  items: [BasketItem!]!
   id: ID!
   ownerId: ID!
   basketType: BasketTypes!
@@ -19,8 +19,8 @@ type BasketItem {
 }
 
 type Item {
-  sections: [Section]
-  ingredients: [ItemIngredient]
+  sections: [Section!]!
+  ingredients: [ItemIngredient!]!
   id: ID!
   name: String!
   description: String
