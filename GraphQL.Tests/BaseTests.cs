@@ -56,6 +56,8 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
                 .AddDataLoader<ItemByIdDataLoader>()
                 .AddDataLoader<MenuByIdDataLoader>()
                 .AddDataLoader<SectionByIdDataLoader>()
+                .AddFiltering()
+                .AddSorting()
                 .Services
                 .BuildServiceProvider();
 

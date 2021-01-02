@@ -13,6 +13,7 @@ using WeDoTakeawayAPI.GraphQL.Item;
 using WeDoTakeawayAPI.GraphQL.Menu;
 using WeDoTakeawayAPI.GraphQL.Menu.DataLoaders;
 using WeDoTakeawayAPI.GraphQL.Model;
+using WeDoTakeawayAPI.GraphQL.Order;
 using WeDoTakeawayAPI.GraphQL.Section;
 using WeDoTakeawayAPI.GraphQL.Section.DataLoaders;
 using Xunit;
@@ -34,6 +35,7 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
                     .AddTypeExtension<BasketQueries>()
                     .AddTypeExtension<ItemQueries>()
                     .AddTypeExtension<MenuQueries>()
+                    .AddTypeExtension<OrderQueries>()
                     .AddTypeExtension<SectionQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                     .AddTypeExtension<AddBasketItemMutations>()
@@ -48,6 +50,8 @@ namespace WeDoTakeawayAPI.GraphQL.Tests
                 .AddDataLoader<ItemByIdDataLoader>()
                 .AddDataLoader<MenuByIdDataLoader>()
                 .AddDataLoader<SectionByIdDataLoader>()
+                .AddFiltering()
+                .AddSorting()
                 .BuildSchemaAsync();
 
             // assert

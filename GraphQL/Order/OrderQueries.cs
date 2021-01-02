@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.Data;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,13 @@ namespace WeDoTakeawayAPI.GraphQL.Order
     [ExtendObjectType(Name = "Query")]
     public class OrderQueries
     {
+        [UseApplicationDbContext]
+        [UsePaging]
+        [UseSorting]
+        public IQueryable<Model.Order> GetOrders(
+            [ScopedService] ApplicationDbContext context) =>
+            context.Orders;
+
         [UseApplicationDbContext]
         public async Task<Model.Order> GetOrderById(
             Guid id,

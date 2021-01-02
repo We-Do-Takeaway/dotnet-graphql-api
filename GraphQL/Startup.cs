@@ -57,7 +57,9 @@ namespace WeDoTakeawayAPI.GraphQL
                 .AddDataLoader<IngredientByIdDataLoader>()
                 .AddDataLoader<ItemByIdDataLoader>()
                 .AddDataLoader<MenuByIdDataLoader>()
-                .AddDataLoader<SectionByIdDataLoader>();
+                .AddDataLoader<SectionByIdDataLoader>()
+                .AddFiltering()
+                .AddSorting();
 
             services.AddCors(options =>
             {

@@ -80,5 +80,39 @@ namespace WeDoTakeawayAPI.GraphQL.Tests.Orders
 
             result.MatchSnapshot();
         }
+
+        [Fact]
+        public async Task Get_Orders()
+        {
+            Model.Order order = await CreateOrder();
+
+            IExecutionResult result = await ServiceProvider.ExecuteRequestAsync(
+                QueryRequestBuilder
+                    .New()
+                    .SetQuery(@"
+                        query Orders {
+	                        orders {
+                                id
+                                name
+                                address1
+                                address2
+                                town
+                                postcode
+                                phone
+                                email
+                                deliveryInstructions
+                                items {
+                                  itemId
+                                  name
+                                  description
+                                  quantity
+                                }
+                            }
+                        }
+                    ")
+                    .Create());
+
+            result.MatchSnapshot();
+        }
     }
 }
